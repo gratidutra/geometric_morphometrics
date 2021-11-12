@@ -1,6 +1,7 @@
 pacman::p_load(
-  Rvcg, geomorph, MASS, Morpho, geomorph, colorspace, cluster, DiscriMiner,
-  ellipse, ggplot2, mclust, NbClust, shapes, vegan, tidyverse, processx
+  Rvcg, geomorph, MASS, Morpho, colorspace, cluster, DiscriMiner,
+  ellipse, ggplot2, mclust, NbClust, shapes, vegan, tidyverse, processx, 
+  plotly
 )
 
 source("colLab.r")
@@ -22,7 +23,7 @@ list_tt <- list.files(path = paste0(getwd(), "/dados_analise/Tabanus"), pattern 
 
 ## Tabanus occidentalis TO
 
-list_tto <- list.files(path = paste0(getwd(), "/dados_analise/Tabanus"), pattern = "tto")
+# list_tto <- list.files(path = paste0(getwd(), "/dados_analise/Tabanus"), pattern = "tto")
 
 # Lendo as listas
 
@@ -46,7 +47,7 @@ ato <- readmulti_nts(list_ato)
 
 ## Tabanus occidentalis TO
 
-tto <- readmulti_nts(list_tt)
+# tto <- readmulti_nts(list_tt)
 
 ## voltando para a pasta principal
 
@@ -60,7 +61,7 @@ dir.create("output")
 
 ## GPA
 
-groups_inter <- list(t_all = t_all, tt = tt, ato = ato, tto = tto)
+groups_inter <- list(t_all = t_all, tt = tt, ato = ato)
 
 alg_inter <- lapply(groups_inter, gpagen)
 
@@ -74,7 +75,7 @@ alg_tt <- alg_inter$tt$coords
 
 alg_ato <- alg_inter$ato$coords
 
-alg_tto <- alg_inter$tto$coords
+# alg_tto <- alg_inter$tto$coords
 
 # Verificando a distribução de todo o dataset
 
@@ -93,7 +94,7 @@ dev.off()
 
 ## Separando as populações
 
-tab_pop <- as.factor(c(rep("ato", 30), rep("tt", 30), rep("tto", 28)))
+tab_pop <- as.factor(c(rep("ato", 30), rep("tt", 30)))
 
 ## Teste do tamanho
 
@@ -108,13 +109,11 @@ ggplotly(ggplot(df_to_plot, aes(y = size, x = tab_pop, fill = tab_pop)) +
   scale_fill_grey() +
   theme_classic())
 
-## anova dos tamanhos das pop
+## teste t dos tamanhos das pop
 
-anova <- aov(size ~ tab_pop)
+teste_t <- t.test(size ~ tab_pop)
 
-summary(anova)
-
-TukeyHSD(anova)
+teste_t
 
 ## Detectando e excluindo outliers
 
@@ -157,11 +156,11 @@ plotRefToTarget(ref, alg_ato[, , 30],
 )
 title(main = "Tabanus occidentalis of Rio Grande do Sul")
 
-plotRefToTarget(ref, alg_tto[, , 28],
-  links = links.trach, method = "vector", mag = 5, gridPars = GP1,
-  label = T, axes = T, useRefPts = T
-)
-title(main = "Tabanus occidentalis of Tocantins")
+# plotRefToTarget(ref, alg_tto[, , 28],
+#   links = links.trach, method = "vector", mag = 5, gridPars = GP1,
+#   label = T, axes = T, useRefPts = T
+# )
+# title(main = "Tabanus occidentalis of Tocantins")
 
 dev.off()
 
@@ -180,8 +179,7 @@ summary$PC.summary
 sink()
 
 label_dc <- list(
-  expression("T. occidentalis Rio Grande do Sul"), expression("T. triangulum"),
-  expression("T. occidentalis Tocantins")
+  expression("T. occidentalis"), expression("T. triangulum")
 )
 
 a <- cbind(pca_tt$x, tab_pop)
@@ -329,34 +327,34 @@ ggplot(CVscores, aes(CV.1, fill = tab_pop)) +
   theme_classic()
 
 
-## plot ggplot
-
-df_ell <- data.frame()
-
-for (g in levels(CVscores$tab_pop)) {
-  df_ell <- rbind(
-    df_ell,
-    cbind(as.data.frame(with(
-      CVscores[CVscores$tab_pop == g, ],
-      ellipse(cor(CV.1, CV.2),
-        scale = c(sd(CV.1), sd(CV.2)),
-        centre = c(mean(CV.1), mean(CV.2))
-      )
-    )), tab_pop = g)
-  )
-}
-
-cva_plot <- ggplot(data = CVscores, aes(x = CV.1, y = CV.2, colour = tab_pop)) +
-  geom_point(size = 4, shape = 18) +
-  geom_path(data = df_ell, aes(x = x, y = y, colour = tab_pop), size = 0.3, linetype = 3) +
-  scale_color_manual(name = "Populations", labels = label_dc, values = c("#1b9e77", "darkorange4", "blue")) +
-  scale_shape_manual(name = "Populations", labels = label_dc, values = c(15, 16, 17, 18)) +
-  theme_classic() +
-  theme(
-    axis.text = element_text(size = 12), axis.title = element_text(size = 12),
-    legend.text = element_text(size = 12), legend.title = element_text(size = 12)
-  )
-
-cva_plot
-
-
+# ## plot ggplot
+# 
+# df_ell <- data.frame()
+# 
+# for (g in levels(CVscores$tab_pop)) {
+#   df_ell <- rbind(
+#     df_ell,
+#     cbind(as.data.frame(with(
+#       CVscores[CVscores$tab_pop == g, ],
+#       ellipse(cor(CV.1, CV.2),
+#         scale = c(sd(CV.1), sd(CV.2)),
+#         centre = c(mean(CV.1), mean(CV.2))
+#       )
+#     )), tab_pop = g)
+#   )
+# }
+# 
+# cva_plot <- ggplot(data = CVscores, aes(x = CV.1, y = CV.2, colour = tab_pop)) +
+#   geom_point(size = 4, shape = 18) +
+#   geom_path(data = df_ell, aes(x = x, y = y, colour = tab_pop), size = 0.3, linetype = 3) +
+#   scale_color_manual(name = "Populations", labels = label_dc, values = c("#1b9e77", "darkorange4", "blue")) +
+#   scale_shape_manual(name = "Populations", labels = label_dc, values = c(15, 16, 17, 18)) +
+#   theme_classic() +
+#   theme(
+#     axis.text = element_text(size = 12), axis.title = element_text(size = 12),
+#     legend.text = element_text(size = 12), legend.title = element_text(size = 12)
+#   )
+# 
+# cva_plot
+# 
+# 
