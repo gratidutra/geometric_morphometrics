@@ -324,7 +324,7 @@ CVscores$tab_pop <- tab_pop
 
 ggplot(CVscores, aes(CV.1, fill = tab_pop)) +
   geom_histogram() +
-  theme_classic()
+  theme_classic() 
 
 
 # ## plot ggplot
