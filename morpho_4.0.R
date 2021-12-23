@@ -245,6 +245,7 @@ angle <-  90 - 360 * (label_data_2$id-0.5) /number_of_bar     # I substract 0.5 
 
 # calculate the alignment of labels: right or left
 # If I am on the left part of the plot, my labels have currently an angle < -90
+
 label_data_2$hjust <-ifelse( angle <- 90, 1, 0)
 
 # flip angle BY to make them readable
@@ -252,6 +253,7 @@ label_data_2$angle<-ifelse(angle <-90, angle+180, angle)
 # ----- ------------------------------------------- ---- #
 
 # Start the plot
+
 p <- ggplot(pc_df, aes(x=as.factor(id), y=as.numeric(value))) +       # Note that id is a factor. If x is numeric, there is some space between the first bar
   
   # This add the bars with a blue color
