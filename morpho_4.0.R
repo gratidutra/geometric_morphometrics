@@ -83,15 +83,6 @@ setwd(paste0(getwd(), "/output"))
 
 df_to_plot <- tibble(Csize = alg_inter$t_all$Csize)
 
-tiff("Csize_histogram.tiff", units = "in", width = 5, height = 5, res = 300)
-
-ggplot(df_to_plot, aes(Csize)) +
-  geom_histogram() +
-  theme_light() +
-  ylab("Frequency")
-
-dev.off()
-
 ## Separando as populações
 
 tab_pop <- as.factor(c(rep("ato", 30), rep("tt", 30)))
@@ -104,10 +95,22 @@ shapiro.test(size)
 
 df_to_plot <- tibble(size, tab_pop)
 
-ggplotly(ggplot(df_to_plot, aes(y = size, x = tab_pop, fill = tab_pop)) +
-  geom_boxplot() +
+ggplot(df_to_plot, aes(y = size, x = tab_pop, fill = tab_pop)) +
+  geom_boxplot(outlier.colour = NULL, aes_string(colour = "tab_pop", fill = "tab_pop")) +
+  stat_summary(
+    geom = "crossbar", width = 0.65, fatten = 0,
+    color = "white",
+    fun.data = function(x) {
+      return(c(
+        y = median(x),
+        ymin = median(x), ymax = median(x)
+      ))
+    }
+  ) +
+  theme_bw() +
+  scale_color_grey() +
   scale_fill_grey() +
-  theme_classic())
+  labs(x = "Populations", y = "Centroid Size")
 
 ## teste t dos tamanhos das pop
 
@@ -142,7 +145,7 @@ GP1 <- gridPar(pt.bg = "#304D63", link.col = "#8FB9AA", link.lty = 10, tar.pt.si
 
 tiff("Shape_species.tiff", units = "in", width = 20, height = 8, res = 300)
 
-layout(matrix(c(1, 1, 2, 3), 2, 2, byrow = TRUE))
+layout(matrix(c(1, 2), 2, 2, byrow = TRUE))
 
 plotRefToTarget(ref, alg_tt[, , 30],
   links = links.trach, method = "vector", mag = 5, gridPars = GP1,
@@ -154,7 +157,7 @@ plotRefToTarget(ref, alg_ato[, , 30],
   links = links.trach, method = "vector", mag = 5, gridPars = GP1,
   label = T, axes = T, useRefPts = T
 )
-title(main = "Tabanus occidentalis of Rio Grande do Sul")
+title(main = "Tabanus occidentalis")
 
 # plotRefToTarget(ref, alg_tto[, , 28],
 #   links = links.trach, method = "vector", mag = 5, gridPars = GP1,
@@ -283,13 +286,21 @@ p
 
 # Anova
 
-anova <- procD.lm(alg_t_all ~ tab_pop, iter = 9999, RRPP = TRUE)
+gdf <- geomorph.data.frame(coords= alg_t_all, 
+                           size = df_to_plot$size, 
+                           species = tab_pop)
 
-anova
 
-resultado <- summary(anova)
+fit <- procD.lm(coords ~ size * species, 
+                data = gdf, iter = 999, turbo = TRUE,
+                RRPP = FALSE, print.progress = FALSE) # randomize raw values
+fit2 <- procD.lm(coords ~ size * species,
+                 data = gdf, iter = 999, turbo = TRUE,
+                 RRPP = TRUE, print.progress = FALSE) # randomize residuals
 
-resultado
+
+summary(fit)
+summary(fit2)
 
 # Comparação par a par
 
@@ -301,7 +312,7 @@ summary(PW)
 
 ## MANOVA Wilks's lambda ver
 
-manova_w <- manova(pca_tt$x[, 1:26] ~ tab_pop)
+manova_w <- manova(pca_tt$x[, 1:26] ~ tab_pop*df_to_plot$size)
 
 summary(manova_w, test = c("Hotelling-Lawley"))
 
@@ -324,7 +335,9 @@ CVscores$tab_pop <- tab_pop
 
 ggplot(CVscores, aes(CV.1, fill = tab_pop)) +
   geom_histogram() +
-  theme_classic() 
+  theme_bw() +
+  scale_fill_grey() + 
+  labs(x = "Canonical Variate 1", y = "Frequency")
 
 
 # ## plot ggplot
