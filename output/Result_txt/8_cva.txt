@@ -1,0 +1,20 @@
+-------------------------
+CVA
+
+ cross-validated classification results in frequencies
+     
+      ato tt
+  ato  23  7
+  tt    5 25
+
+
+ cross-validated classification result in %
+     
+         ato     tt
+  ato 76.667 23.333
+  tt  16.667 83.333
+
+
+ overall classification accuracy: 80 %
+
+ Kappa statistic: 0.6

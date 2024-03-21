@@ -1,0 +1,139 @@
+-------------------------
+SHAPIRO CENTROID SIZE
+
+	Shapiro-Wilk normality test
+
+data:  size
+W = 0.97836, p-value = 0.3633
+
+-------------------------
+TEST T 
+
+	Welch Two Sample t-test
+
+data:  size by tab_pop
+t = 3.384, df = 47.024, p-value = 0.001449
+alternative hypothesis: true difference in means between group ato and group tt is not equal to 0
+95 percent confidence interval:
+ 15.04842 59.16898
+sample estimates:
+mean in group ato  mean in group tt 
+         870.9430          833.8343 
+
+-------------------------
+PCA
+
+Ordination type: Principal Component Analysis 
+Centering by OLS mean
+Orthogonal projection of OLS residuals
+Number of observations: 60 
+Number of vectors 26 
+
+Importance of Components:
+                              Comp1        Comp2        Comp3        Comp4        Comp5        Comp6
+Eigenvalues            9.552475e-05 7.224427e-05 6.120974e-05 5.064662e-05 3.054488e-05 2.579465e-05
+Proportion of Variance 2.035333e-01 1.539299e-01 1.304188e-01 1.079121e-01 6.508156e-02 5.496032e-02
+Cumulative Proportion  2.035333e-01 3.574632e-01 4.878819e-01 5.957940e-01 6.608756e-01 7.158359e-01
+                              Comp7        Comp8        Comp9       Comp10       Comp11       Comp12
+Eigenvalues            2.208156e-05 2.123493e-05 1.524007e-05 1.310889e-05 1.185434e-05 8.750551e-06
+Proportion of Variance 4.704887e-02 4.524498e-02 3.247180e-02 2.793093e-02 2.525789e-02 1.864468e-02
+Cumulative Proportion  7.628848e-01 8.081297e-01 8.406016e-01 8.685325e-01 8.937904e-01 9.124350e-01
+                             Comp13       Comp14       Comp15       Comp16       Comp17       Comp18
+Eigenvalues            7.337448e-06 5.906393e-06 5.685103e-06 5.549784e-06 0.0000044281 3.210865e-06
+Proportion of Variance 1.563380e-02 1.258467e-02 1.211317e-02 1.182485e-02 0.0094348933 6.841347e-03
+Cumulative Proportion  9.280688e-01 9.406535e-01 9.527667e-01 9.645915e-01 0.9740264356 9.808678e-01
+                             Comp19       Comp20       Comp21       Comp22       Comp23       Comp24
+Eigenvalues            2.543850e-06 1.895759e-06 1.439182e-06 1.013130e-06 7.393436e-07 6.789436e-07
+Proportion of Variance 5.420146e-03 4.039268e-03 3.066447e-03 2.158663e-03 1.575309e-03 1.446616e-03
+Cumulative Proportion  9.862879e-01 9.903272e-01 9.933936e-01 9.955523e-01 9.971276e-01 9.985742e-01
+                             Comp25       Comp26
+Eigenvalues            4.014638e-07 2.676956e-07
+Proportion of Variance 8.553936e-04 5.703753e-04
+Cumulative Proportion  9.994296e-01 1.000000e+00
+-------------------------
+ANOVA FIT 1
+
+Analysis of Variance, using Residual Randomization
+Permutation procedure: Randomization of raw values (residuals of mean) 
+Number of permutations: 1000 
+Estimation method: Ordinary Least Squares 
+Sums of Squares and Cross-products: Type I 
+Effect sizes (Z) based on F distributions
+
+             Df        SS         MS     Rsq      F      Z Pr(>F)   
+size          1 0.0015993 0.00159927 0.05775 3.8015 3.3246  0.003 **
+species       1 0.0021339 0.00213395 0.07706 5.0724 4.3799  0.001 **
+size:species  1 0.0003984 0.00039839 0.01439 0.9470 0.0140  0.504   
+Residuals    56 0.0235590 0.00042070 0.85079                        
+Total        59 0.0276906                                           
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Call: procD.lm(f1 = coords ~ size * species, iter = 999, RRPP = FALSE,  
+    turbo = TRUE, data = gdf, print.progress = FALSE)
+-------------------------
+ANOVA FIT 2
+
+Analysis of Variance, using Residual Randomization
+Permutation procedure: Randomization of null model residuals 
+Number of permutations: 1000 
+Estimation method: Ordinary Least Squares 
+Sums of Squares and Cross-products: Type I 
+Effect sizes (Z) based on F distributions
+
+             Df        SS         MS     Rsq      F      Z Pr(>F)   
+size          1 0.0015993 0.00159927 0.05775 3.8015 3.3246  0.003 **
+species       1 0.0021339 0.00213395 0.07706 5.0724 4.3034  0.001 **
+size:species  1 0.0003984 0.00039839 0.01439 0.9470 0.0203  0.489   
+Residuals    56 0.0235590 0.00042070 0.85079                        
+Total        59 0.0276906                                           
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Call: procD.lm(f1 = coords ~ size * species, iter = 999, RRPP = TRUE,  
+    turbo = TRUE, data = gdf, print.progress = FALSE)
+-------------------------
+PARWISE ANOVA
+
+Pairwise comparisons
+
+Groups: ato tt 
+
+RRPP: 1000 permutations
+
+LS means:
+Vectors hidden (use show.vectors = TRUE to view)
+
+Pairwise distances between means, plus statistics
+                d  UCL (95%)          Z Pr > d
+ato:tt 0.01297523 0.01699996 -0.8774916  0.812
+-------------------------
+MANOVA
+
+                        Df   Wilks approx F num Df den Df    Pr(>F)    
+tab_pop                  1 0.24569   8.5967     15     42 1.672e-08 ***
+df_to_plot$size          1 0.57554   2.0650     15     42   0.03286 *  
+tab_pop:df_to_plot$size  1 0.77250   0.8246     15     42   0.64594    
+Residuals               56                                             
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+-------------------------
+CVA
+
+ cross-validated classification results in frequencies
+     
+      ato tt
+  ato  23  7
+  tt    5 25
+
+
+ cross-validated classification result in %
+     
+         ato     tt
+  ato 76.667 23.333
+  tt  16.667 83.333
+
+
+ overall classification accuracy: 80 %
+
+ Kappa statistic: 0.6

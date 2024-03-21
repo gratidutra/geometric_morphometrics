@@ -1,0 +1,13 @@
+
+Pairwise comparisons
+
+Groups: ato tt 
+
+RRPP: 1000 permutations
+
+LS means:
+Vectors hidden (use show.vectors = TRUE to view)
+
+Pairwise distances between means, plus statistics
+                d  UCL (95%)          Z Pr > d
+ato:tt 0.01297523 0.01699996 -0.8774916  0.812

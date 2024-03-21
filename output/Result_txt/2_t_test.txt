@@ -1,0 +1,14 @@
+-------------------------
+TEST T 
+
+	Welch Two Sample t-test
+
+data:  size by tab_pop
+t = 3.384, df = 47.024, p-value = 0.001449
+alternative hypothesis: true difference in means between group ato and group tt is not equal to 0
+95 percent confidence interval:
+ 15.04842 59.16898
+sample estimates:
+mean in group ato  mean in group tt 
+         870.9430          833.8343 
+

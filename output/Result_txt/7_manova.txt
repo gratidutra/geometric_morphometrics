@@ -1,0 +1,10 @@
+-------------------------
+MANOVA
+
+                        Df Hotelling-Lawley approx F num Df den Df    Pr(>F)    
+tab_pop                  1           4.4652   5.3239     26     31 8.958e-06 ***
+df_to_plot$size          1           1.2193   1.4538     26     31    0.1587    
+tab_pop:df_to_plot$size  1           0.7680   0.9157     26     31    0.5873    
+Residuals               56                                                      
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
